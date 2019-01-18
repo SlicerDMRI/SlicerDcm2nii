@@ -1,5 +1,5 @@
 
-set(proj dcm2nii)
+set(proj dcm2niix)
 
 # Set dependency list
 set(${proj}_DEPENDS
