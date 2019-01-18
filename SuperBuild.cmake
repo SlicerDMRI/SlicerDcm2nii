@@ -18,7 +18,7 @@ set(proj ${SUPERBUILD_TOPLEVEL_PROJECT})
 
 # Project dependencies
 set(${proj}_DEPENDS
-   Foo
+   dcm2niix
    )
 
 ExternalProject_Include_Dependencies(${proj}
