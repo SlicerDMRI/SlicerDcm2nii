@@ -73,7 +73,7 @@ class Dcm2niixGUIWidget(ScriptedLoadableModuleWidget):
     # output volume selector
     #
     with It(slicer.qMRMLNodeComboBox()) as w:
-      w.nodeTypes = ["vtkMRMLScalarVolumeNode"]
+      w.nodeTypes = ["vtkMRMLScalarVolumeNode", "vtkMRMLDiffusionWeightedVolumeNode"]
       w.selectNodeUponCreation = True
       w.addEnabled = True
       w.removeEnabled = True
@@ -138,25 +138,39 @@ class Dcm2niixGUILogic(ScriptedLoadableModuleLogic):
       return False
 
     tmp_dir = slicer.util.tempDirectory()
+    tmp_out = tempfile.NamedTemporaryFile(dir=tmp_dir)
+    # suffix=".nrrd"
 
-    res = False
-    with tempfile.NamedTemporaryFile(suffix=".nii") as tmp_out:
-      args = list((
-        "dcm2niix",
-        "-1",
-        "-d", "0",
-        "-f", str(tmp_out.name),
-        "-o", str(tmp_dir),
-        str(inputDirectory)
-        ))
+    args = list(( "dcm2niix",
+                  "-1",
+                  "-d", "0",
+                  "-f", str(os.path.basename(tmp_out.name)),
+                  "-o", str(tmp_dir),
+                  "-e", "y", # this flag tells dcm2nii to directly create a .nrrd
+                  "-z", "y",
+                  str(inputDirectory)
+                  ))
+    try:
       call_output = subprocess.check_output(args)
+    except err:
+      print(err)
+      return False
 
     print('dcm2nii arguments:')
     print(args)
     print('')
     print('dcm2nii results:')
     print(call_output)
-    slicer.util.loadVolume(os.path.join(tmp_dir, tmp_out.name))
+    res = False
+    sn = outputVolumeNode.GetStorageNode()
+    if sn is None:
+      sn = outputVolumeNode.CreateDefaultStorageNode()
+
+    outputFileName = os.path.join(tmp_dir, tmp_out.name+'.nhdr')
+
+    sn.SetFileName(outputFileName)
+    sn.ReadData(outputVolumeNode, True)
+    #res = slicer.util.loadVolume()
     return res
 
 
