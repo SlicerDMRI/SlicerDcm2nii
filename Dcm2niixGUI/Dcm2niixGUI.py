@@ -22,7 +22,7 @@ class Dcm2niixGUI(ScriptedLoadableModule):
   def __init__(self, parent):
     ScriptedLoadableModule.__init__(self, parent)
     self.parent.title = "Dcm2niixGUI" # TODO make this more human readable by adding spaces
-    self.parent.categories = ["Diffusion/Import and Export"]
+    self.parent.categories = ["Diffusion.Import and Export"]
     self.parent.dependencies = []
     self.parent.contributors = ["Isaiah Norton, Lauren O'Donnell (Brigham & Women's Hospital)"] # replace with "Firstname Lastname (Organization)"
     self.parent.helpText = """
