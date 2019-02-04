@@ -67,7 +67,7 @@ class Dcm2niixGUIWidget(ScriptedLoadableModuleWidget):
       self.inputDirectorySelector = w
       # make a directory-only, save dialog
       w.filters = ctk.ctkPathLineEdit.Dirs | ctk.ctkPathLineEdit.Writable
-      parametersFormLayout.addRow("Input File: ", w)
+      parametersFormLayout.addRow("Input Directory: ", w)
 
     #
     # output volume selector
