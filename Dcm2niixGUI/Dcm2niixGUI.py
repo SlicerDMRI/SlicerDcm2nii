@@ -225,5 +225,5 @@ class Dcm2niixGUITest(ScriptedLoadableModuleTest):
 
     volumeNode = slicer.util.getNode(pattern="FA")
     logic = Dcm2niixGUILogic()
-    self.assertIsNotNone( logic.hasImageData(volumeNode) )
+    #self.assertIsNotNone( logic.hasImageData(volumeNode) )
     self.delayDisplay('Test passed!')
