@@ -58,6 +58,7 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${CMAKE_PROJECT_NAME}_USE_SYSTEM_${proj})
       # XXX The following two variables should be updated to match the
       #     requirements of a real CMake based external project
       # XXX Then, this comment and the one above should be removed. Really.
+      -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/inner-build/${Slicer_THIRDPARTY_LIB_DIR}/qt-scripted-modules/Resources
       -D${proj}_INSTALL_RUNTIME_DIR:STRING=${Slicer_INSTALL_THIRDPARTY_LIB_DIR}
       -D${proj}_INSTALL_LIBRARY_DIR:STRING=${Slicer_INSTALL_THIRDPARTY_LIB_DIR}
       # Output directories for CLIs
@@ -66,7 +67,7 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${CMAKE_PROJECT_NAME}_USE_SYSTEM_${proj})
       #-DSlicerExecutionModel_DEFAULT_CLI_RUNTIME_ARCHIVE_DIRECTORY:PATH=${SlicerExecutionModel_DEFAULT_CLI_ARCHIVE_OUTPUT_DIRECTORY}
       # Options
       -DBUILD_TESTING:BOOL=OFF
-    INSTALL_COMMAND ""
+    INSTALL_COMMAND make install
     DEPENDS
       ${${proj}_DEPENDS}
     )

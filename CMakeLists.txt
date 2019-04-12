@@ -5,11 +5,11 @@ project(SlicerDcm2nii)
 #-----------------------------------------------------------------------------
 # Extension meta-information
 set(EXTENSION_HOMEPAGE "http://slicer.org/slicerWiki/index.php/Documentation/Nightly/Extensions/SlicerDcm2nii")
-set(EXTENSION_CATEGORY "Examples")
-set(EXTENSION_CONTRIBUTORS "John Doe (AnyWare Corp.)")
-set(EXTENSION_DESCRIPTION "This is an example of an extension using SuperBuild to build a dependent project named Foo")
-set(EXTENSION_ICONURL "http://www.example.com/Slicer/Extensions/SlicerDcm2nii.png")
-set(EXTENSION_SCREENSHOTURLS "http://www.example.com/Slicer/Extensions/SlicerDcm2nii/Screenshots/1.png")
+set(EXTENSION_CATEGORY "Diffusion")
+set(EXTENSION_CONTRIBUTORS "Isaiah Norton, Fan Zhang, Lauren O'Donnell, Steve Pieper (BWH)")
+set(EXTENSION_DESCRIPTION "This allows you to run Chris Rorden's dcm2niix inside Slicer")
+set(EXTENSION_ICONURL "https://avatars0.githubusercontent.com/u/15898279?s=400&u=194e4f9b801c25b697c5431b829052a4774e0859&v=4")
+set(EXTENSION_SCREENSHOTURLS "https://avatars0.githubusercontent.com/u/15898279?s=400&u=194e4f9b801c25b697c5431b829052a4774e0859&v=4")
 set(EXTENSION_DEPENDS "NA") # Specified as a space separated string, a list or 'NA' if any
 set(EXTENSION_BUILD_SUBDIRECTORY inner-build)
 
@@ -40,7 +40,7 @@ add_subdirectory(Dcm2niixGUI)
 
 #-----------------------------------------------------------------------------
 set(EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS)
-#list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${Foo_DIR};Foo;RuntimeLibraries;/")
+list(APPEND EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS "${dcm2niix_DIR};dcm2niix;RuntimeLibraries;/")
 set(${EXTENSION_NAME}_CPACK_INSTALL_CMAKE_PROJECTS "${EXTENSION_CPACK_INSTALL_CMAKE_PROJECTS}" CACHE STRING "List of external projects to install" FORCE)
 
 #-----------------------------------------------------------------------------

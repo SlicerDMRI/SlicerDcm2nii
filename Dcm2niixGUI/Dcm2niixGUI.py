@@ -70,22 +70,6 @@ class Dcm2niixGUIWidget(ScriptedLoadableModuleWidget):
       parametersFormLayout.addRow("Input Directory: ", w)
 
     #
-    # output volume selector
-    #
-    with It(slicer.qMRMLNodeComboBox()) as w:
-      w.nodeTypes = ["vtkMRMLScalarVolumeNode", "vtkMRMLDiffusionWeightedVolumeNode"]
-      w.selectNodeUponCreation = True
-      w.addEnabled = True
-      w.removeEnabled = True
-      w.noneEnabled = True
-      w.showHidden = False
-      w.showChildNodeTypes = True
-      w.setMRMLScene(slicer.mrmlScene)
-      w.setToolTip( "Pick the output volume." )
-      self.outputSelector = w
-      parametersFormLayout.addRow("Output Volume: ", self.outputSelector)
-
-    #
     # Apply Button
     #
     with It( qt.QPushButton("Apply") ) as w:
@@ -96,7 +80,6 @@ class Dcm2niixGUIWidget(ScriptedLoadableModuleWidget):
 
     # connections
     self.applyButton.connect('clicked(bool)', self.onApplyButton)
-    self.outputSelector.connect('currentNodeChanged (bool)', self.reset)
     self.inputDirectorySelector.connect('currentPathChanged(const QString&)', self.reset)
 
     # Add vertical spacer
@@ -106,19 +89,23 @@ class Dcm2niixGUIWidget(ScriptedLoadableModuleWidget):
     self.onSelect()
 
   def reset(self, _foo):
-    enabled = (os.path.isdir(self.inputDirectorySelector.currentPath) and
-               self.outputSelector.currentNode() is not None)
+    enabled = os.path.isdir(self.inputDirectorySelector.currentPath)
     self.applyButton.enabled = enabled
 
   def cleanup(self):
     pass
 
   def onSelect(self):
-    self.applyButton.enabled = self.inputDirectorySelector.currentPath and self.outputSelector.currentNode()
+    self.applyButton.enabled = self.inputDirectorySelector.currentPath
 
   def onApplyButton(self):
     logic = Dcm2niixGUILogic()
-    logic.run(self.inputDirectorySelector.currentPath, self.outputSelector.currentNode())
+    self.applyButton.text = "Running..."
+    result,error = logic.run(self.inputDirectorySelector.currentPath)
+    self.applyButton.text = "Apply"
+    if result is False:
+      slicer.util.errorDisplay(error)
+
 
 #
 # Dcm2niixGUILogic
@@ -128,20 +115,17 @@ import tempfile
 import subprocess
 
 class Dcm2niixGUILogic(ScriptedLoadableModuleLogic):
-  def run(self, inputDirectory, outputVolumeNode):
+  def run(self, inputDirectory):
     """
     Run the actual algorithm
     """
-
-    if not outputVolumeNode:
-      slicer.util.errorDisplay('Input volume is the same as output volume. Choose a different output volume.')
-      return False
 
     tmp_dir = slicer.util.tempDirectory()
     tmp_out = tempfile.NamedTemporaryFile(dir=tmp_dir)
     # suffix=".nrrd"
 
-    args = list(( "dcm2niix",
+    cmdPath = os.path.join(os.path.dirname(slicer.modules.dcm2niixgui.path), "Resources", "bin", "dcm2niix")
+    args = list(( cmdPath,
                   "-1",
                   "-d", "0",
                   "-f", str(os.path.basename(tmp_out.name)),
@@ -150,28 +134,24 @@ class Dcm2niixGUILogic(ScriptedLoadableModuleLogic):
                   "-z", "y",
                   str(inputDirectory)
                   ))
+    print("running: ", args)
     try:
       call_output = subprocess.check_output(args)
-    except err:
+    except Exception as err:
       print(err)
-      return False
+      return False, err
 
     print('dcm2nii arguments:')
     print(args)
     print('')
     print('dcm2nii results:')
     print(call_output)
-    res = False
-    sn = outputVolumeNode.GetStorageNode()
-    if sn is None:
-      sn = outputVolumeNode.CreateDefaultStorageNode()
 
     outputFileName = os.path.join(tmp_dir, tmp_out.name+'.nhdr')
 
-    sn.SetFileName(outputFileName)
-    sn.ReadData(outputVolumeNode, True)
-    #res = slicer.util.loadVolume()
-    return res
+    res = slicer.util.loadVolume( outputFileName, properties={"name": os.path.basename(str(inputDirectory))} )
+
+    return res, "Check log for error"
 
 
 class Dcm2niixGUITest(ScriptedLoadableModuleTest):
