@@ -67,7 +67,6 @@ if(NOT DEFINED ${proj}_DIR AND NOT ${CMAKE_PROJECT_NAME}_USE_SYSTEM_${proj})
       #-DSlicerExecutionModel_DEFAULT_CLI_RUNTIME_ARCHIVE_DIRECTORY:PATH=${SlicerExecutionModel_DEFAULT_CLI_ARCHIVE_OUTPUT_DIRECTORY}
       # Options
       -DBUILD_TESTING:BOOL=OFF
-    INSTALL_COMMAND make install
     DEPENDS
       ${${proj}_DEPENDS}
     )
