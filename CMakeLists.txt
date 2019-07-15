@@ -36,6 +36,7 @@ endif()
 #-----------------------------------------------------------------------------
 # Extension modules
 add_subdirectory(Dcm2niixGUI)
+add_subdirectory(Dcm2niixPlugin)
 ## NEXT_MODULE
 
 #-----------------------------------------------------------------------------
