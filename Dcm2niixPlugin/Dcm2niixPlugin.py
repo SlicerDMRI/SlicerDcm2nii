@@ -3,7 +3,6 @@ import string
 from __main__ import vtk, qt, ctk, slicer
 import logging
 import numpy
-import dicom
 from DICOMLib import DICOMPlugin
 from DICOMLib import DICOMLoadable
 
