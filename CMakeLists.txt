@@ -4,10 +4,10 @@ project(SlicerDcm2nii)
 
 #-----------------------------------------------------------------------------
 # Extension meta-information
-set(EXTENSION_HOMEPAGE "http://slicer.org/slicerWiki/index.php/Documentation/Nightly/Extensions/SlicerDcm2nii")
+set(EXTENSION_HOMEPAGE "https://slicer.org/slicerWiki/index.php/Documentation/Nightly/Extensions/SlicerDcm2nii")
 set(EXTENSION_CATEGORY "Diffusion")
-set(EXTENSION_CONTRIBUTORS "Isaiah Norton, Fan Zhang, Lauren O'Donnell, Steve Pieper (BWH)")
-set(EXTENSION_DESCRIPTION "This allows you to run Chris Rorden's dcm2niix inside Slicer")
+set(EXTENSION_CONTRIBUTORS "Isaiah Norton, Fan Zhang, Lauren O'Donnell, Steve Pieper (BWH), and Jean-Christophe Fillion-Robin (Kitware)")
+set(EXTENSION_DESCRIPTION "SlicerDcm2nii builds and distributes Chris Rorden's dcm2niix (https://github.com/rordenlab/dcm2niix) as part of the Slicer superbuild.")
 set(EXTENSION_ICONURL "https://avatars0.githubusercontent.com/u/15898279?s=400&u=194e4f9b801c25b697c5431b829052a4774e0859&v=4")
 set(EXTENSION_SCREENSHOTURLS "https://avatars0.githubusercontent.com/u/15898279?s=400&u=194e4f9b801c25b697c5431b829052a4774e0859&v=4")
 set(EXTENSION_DEPENDS "NA") # Specified as a space separated string, a list or 'NA' if any
